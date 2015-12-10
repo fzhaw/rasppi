@@ -64,7 +64,7 @@
     <!-- scripts used for broadcasting -->
     <script src="//cdn.webrtc-experiment.com/firebase.js">
     </script>
-    <script src="//cdn.webrtc-experiment.com/RTCMultiConnection.js">
+    <script src="RTCMultiConnection.js">
     </script>
 </head>
 
@@ -197,7 +197,7 @@
                 OfferToReceiveVideo: false
             };
 
-            connection.open();
+            connection.open("bettercast");
         };
 
         // setup signaling to search existing sessions

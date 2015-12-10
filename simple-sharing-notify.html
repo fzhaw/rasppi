@@ -16,6 +16,9 @@ connection.session = {
 
 connection.onstream = function(e) {
     document.body.appendChild(e.mediaElement);
+    // if somebody is already sharing hide the sharing buttons
+    document.querySelector('#openNewSessionButton').style.visibility = 'hidden';
+    document.querySelector('#shareParticipantScreenButton').style.visibility = 'hidden';
 };
 
 connection.connect();
@@ -41,7 +44,7 @@ connection.onstreamended = function(e) {
             }, 1000);
         };
 
-// TODO: if request comes from the same host hide the sharing buttons
+
 
 // notify Pi to open the window
 function notifyPiOpen(){
