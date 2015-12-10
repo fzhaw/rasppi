@@ -17,7 +17,8 @@ connection.onstream = function(e) {
     // if somebody is already sharing hide the sharing buttons
     document.querySelector('#openNewSessionButton').style.visibility = 'hidden';
     document.querySelector('#shareParticipantScreenButton').style.visibility = 'hidden';
-    //document.body.removeChild()
+    document.body.removeChild(document.querySelector('#openNewSessionButton'));
+    document.body.removeChild(document.querySelector('#shareParticipantScreenButton'));
     // show the video
     document.body.appendChild(e.mediaElement);
 };
