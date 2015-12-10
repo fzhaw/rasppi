@@ -34,6 +34,15 @@ document.querySelector('#shareParticipantScreenButton').onclick = function() {
 };
 
 
+// React to stream ending
+connection.onstreamended = function(e) {
+            setTimeout(function() {
+                window.close();
+            }, 1000);
+        };
+
+// TODO: if request comes from the same host hide the sharing buttons
+
 // notify Pi to open the window
 function notifyPiOpen(){
     url = window.location.href;
