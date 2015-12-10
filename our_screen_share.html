@@ -1,0 +1,11 @@
+<hr /><button id="openRoom">Open Room</button>
+<button id="joinRoom">Join Room</button><hr />
+<script src="https://cdn.webrtc-experiment.com/RTCMultiConnection.js"> </script>
+<script>
+document.getElementById('openRoom').onclick = function() {
+    new RTCMultiConnection().open();
+};
+document.getElementById('joinRoom').onclick = function() {
+    new RTCMultiConnection().connect();
+};
+</script>
