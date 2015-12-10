@@ -1,8 +1,7 @@
 <script src="//cdn.webrtc-experiment.com/RTCMultiConnection.js"></script>
 
 <button id="openNewSessionButton">Open New Room</button>
-<button id="shareParticipantScreenButton">
-    Share Participant's Screen
+<button id="shareParticipantScreenButton">Share Participant's Screen
 </button>
 
 <script>
@@ -15,10 +14,12 @@ connection.session = {
 };
 
 connection.onstream = function(e) {
-    document.body.appendChild(e.mediaElement);
     // if somebody is already sharing hide the sharing buttons
     document.querySelector('#openNewSessionButton').style.visibility = 'hidden';
     document.querySelector('#shareParticipantScreenButton').style.visibility = 'hidden';
+    //document.body.removeChild()
+    // show the video
+    document.body.appendChild(e.mediaElement);
 };
 
 connection.connect();
