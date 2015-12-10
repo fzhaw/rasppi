@@ -1,9 +1,7 @@
+<html>
+<head>
+<title>Welcome to BetterCast! A proud hack by ICCLab</title>
 <script src="//cdn.webrtc-experiment.com/RTCMultiConnection.js"></script>
-
-<button id="openNewSessionButton">Open New Room</button>
-<button id="shareParticipantScreenButton">Share Participant's Screen
-</button>
-
 <script>
 var connection = new RTCMultiConnection();
 
@@ -16,9 +14,7 @@ connection.session = {
 connection.onstream = function(e) {
     // if somebody is already sharing hide the sharing buttons
     document.querySelector('#openNewSessionButton').style.visibility = 'hidden';
-    document.querySelector('#shareParticipantScreenButton').style.visibility = 'hidden';
     document.body.removeChild(document.querySelector('#openNewSessionButton'));
-    document.body.removeChild(document.querySelector('#shareParticipantScreenButton'));
     // show the video
     document.body.appendChild(e.mediaElement);
 };
@@ -47,7 +43,6 @@ connection.onstreamended = function(e) {
         };
 
 
-
 // notify Pi to open the window
 function notifyPiOpen(){
     url = window.location.href;
@@ -57,4 +52,8 @@ function notifyPiOpen(){
     xhttp.send("url="+url);
 }
 </script>
-
+</head>
+<body>
+<button id="openNewSessionButton">Start sharing screen</button>
+</body>
+</html>
