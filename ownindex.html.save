@@ -1,0 +1,64 @@
+<html>
+<head>
+<title>Welcome to BetterCast! A proud hack by ICCLab</title>
+
+<script src="//cdn.webrtc-experiment.com/RTCMultiConnection.js"></script>
+
+<button id="openNewSessionButton">Start sharing screen</button>
+
+
+<script>
+var connection = new RTCMultiConnection();
+
+// by default, initiator starts one-way screen
+connection.session = {
+    screen: true,
+    oneway: true
+};
+
+connection.onstream = function(e) {
+    // if somebody is already sharing hide the sharing buttons
+    document.querySelector('#openNewSessionButton').style.visibility = 'hidden';
+    document.body.removeChild(document.querySelector('#openNewSessionButton'));
+    // show the video
+    document.body.appendChild(e.mediaElement);
+};
+
+connection.connect();
+
+document.querySelector('#openNewSessionButton').onclick = function() {
+    connection.open();
+    notifyPiOpen();
+};
+
+// if participant wants, he can add his screen at runtime!
+document.querySelector('#shareParticipantScreenButton').onclick = function() {
+    connection.addStream({
+        screen: true,
+        oneway: true
+    });
+};
+
+
+// React to stream ending
+connection.onstreamended = function(e) {
+            setTimeout(function() {
+                window.close();
+            }, 1000);
+        };
+
+
+
+
+// notify Pi to open the window
+function notifyPiOpen(){
+    url = window.location.href;
+    ip = url.split("//")[1];
+    ip = ip.split(":")[0];
+    xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "https://"+ip+":1880/notify", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send("url="+url);
+}
+</script>
+
