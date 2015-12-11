@@ -28,7 +28,7 @@ connection.connect();
 
 document.querySelector('#openNewSessionButton').onclick = function() {
     connection.open();
-    notifyPiOpen();
+    notifyScreen();
 };
 
 // React to stream ending
@@ -39,15 +39,55 @@ connection.onstreamended = function(e) {
         };
 
 
-// notify Pi to open the window
-function notifyPiOpen(){
+// Retrieve screens data
+var screens;
+function getScreens(){
     url = window.location.href;
-    ip = url.split("//")[1];
-    ip = ip.split(":")[0];
     xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "https://"+ip+":1880/notify", true);
-    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.send("url="+url);
+    xhttp.onreadystatechange = function() {
+      if (xhttp.readyState == 4 && xhttp.status == 200) {
+        sc = document.getElementById("screen_list");
+        //var jsonResponse = JSON.parse(xhttp.responseText);
+	var jsonResponse = JSON.parse(xhttp.responseText);	
+        screens = jsonResponse;
+      }
+    };
+    u = url.split("/sharing")[0];
+    xhttp.open("GET", u + "/screens", true);
+    xhttp.send();
 }
+
+// notify Pi to open the window
+function notifyScreen(){
+    url = window.location.href;
+    sc = url.split("/sharing/")[1];
+    //alert(sc);
+    dict = screens[sc].notify_url;
+    //ip = url.split("//")[1];
+    //ip = ip.split(":")[0];
+    for (var key in dict) {
+      xhttp = new XMLHttpRequest();
+      xhttp.open("POST", dict[key], true);
+      if ( key == "browser"){
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send("url=" + url);
+      }
+    }
+}
+
+getScreens();
+
+
+
+// notify Pi to open the window
+//function notifyPiOpen(){
+//    url = window.location.href;
+//    ip = url.split("//")[1];
+//    ip = ip.split(":")[0];
+//    xhttp = new XMLHttpRequest();
+//    xhttp.open("POST", "https://"+ip+":1880/notify", true);
+//    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+//    xhttp.send("url="+url);
+//}
 </script>
 
