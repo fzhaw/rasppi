@@ -6,41 +6,64 @@
 <select name="screen" id="screen_list">
 </select>
 <button id="openNewSessionButton">Choose screen</button>
-
-
-
+<div id="url"></div>
 
 <script>
 document.querySelector('#openNewSessionButton').onclick = function() {
-    connection.open();
-    notifyPiOpen();
+    //connection.open();
+    opts = document.getElementById("screen_list");
+    var sc = opts.options[opts.selectedIndex].value;
+    var link = document.createElement("a");
+    url = window.location.href
+    link.setAttribute("href", url + "sharing/" + sc);
+    var t = document.createTextNode("Click here to start sharing");
+    link.appendChild(t);
+    document.getElementById("url").appendChild(link);
+    //notifyScreen();
 };
+
+var screens;
 
 function getScreens(){
     url = window.location.href;
-    ip = url.split("//")[1];
-    ip = ip.split("/")[0];
     xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
-    if (xhttp.readyState == 4 && xhttp.status == 200) {
-      sc = document.getElementById("screen_list");
-      var jsonResponse = JSON.parse(xhttp.responseText);
-    }
-};
-    xhttp.open("GET", "https://"+ip+"/screens", true);
+      if (xhttp.readyState == 4 && xhttp.status == 200) {
+        sc = document.getElementById("screen_list");
+        var jsonResponse = JSON.parse(xhttp.responseText);
+        screens = jsonResponse;
+        for (var key in jsonResponse) {
+          if (jsonResponse.hasOwnProperty(key)) {
+            //alert(jsonResponse[key]);
+            var opt = document.createElement("option");
+            opt.setAttribute("value", key);
+            var t = document.createTextNode(key);
+            opt.appendChild(t);
+            sc.appendChild(opt);   
+          }
+        }
+      }
+    };
+    xhttp.open("GET", url + "screens", true);
     xhttp.send();
 }
 
-// notify Pi to open the window
-function notifyPiOpen(){
-    url = window.location.href;
-    ip = url.split("//")[1];
-    ip = ip.split(":")[0];
-    xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "https://"+ip+":1880/notify", true);
-    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.send("url="+url);
-}
+//// notify Pi to open the window
+//function notifyScreen(){
+//    url = window.location.href;
+//    ip = url.split("//")[1];
+//    ip = ip.split("/")[1];
+//    sc = ip.split("/")[1];
+//    dict = screens[sc].notify_url;
+//    //ip = url.split("//")[1];
+//    //ip = ip.split(":")[0];
+//    for (var key in dict) {
+//      xhttp = new XMLHttpRequest();
+//      xhttp.open("POST", url, true);
+//      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+//      xhttp.send("url=" + url + "sharing/" + sc);
+//    }
+//}
 
 getScreens();
 </script>
