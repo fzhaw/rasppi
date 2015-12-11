@@ -3,14 +3,20 @@ var http = require('http');
 var querystring = require('querystring');
 var express = require('express');
 var bodyParser = require('body-parser');
+var https = require('https');
 var app = express();
 app.use(bodyParser.json());
 var screens = {};
 var fs = require('fs');
 
+var privateKey  = fs.readFileSync('../key.pem', 'utf8');
+var certificate = fs.readFileSync('../cert.pem', 'utf8');
+var credentials = {key: privateKey, cert: certificate};
+
+
 
 //Lets define a port we want to listen to
-const PORT=8081; 
+const PORT=8080; 
 
 
 //Lets use our dispatcher
@@ -50,8 +56,10 @@ app.get('/screens', function(req,res){
   res.end();
 })
 
-app.listen(3000,function(){
-  console.log("Started on PORT 3000");
+var httpsServer = https.createServer(credentials, app);
+
+httpsServer.listen(PORT, function(){
+  console.log("Started on PORT " + PORT);
 })
 
 
