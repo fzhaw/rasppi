@@ -6,7 +6,7 @@ fi
 ippi=$ip
 name='manu-pi'
 display=':0'
-wakeup='http://'$ippi':1880/notify-wake-up'
+wakeup='https://'$ippi':1880/notify-wake-up'
 browser='https://'$ip':1880/notify'
 #echo "registering ip $ip ..."
 curl -k -v -X POST -H 'Content-Type: application/json' -d '{"notify_url":{"browser":"'$browser'", "wakeup":"'$wakeup'"},"name":"'$name'"}' https://bettercast.ddns.net:8080/register
