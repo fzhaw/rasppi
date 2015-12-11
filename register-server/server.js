@@ -51,6 +51,20 @@ app.get('/', function(req,res){
     })
 })
 
+
+app.get('/sharing', function(req,res){
+  fs.readFile(__dirname + "/index.html", function(err, data) {
+    if (err) {
+      console.log(err);
+      res.writeHead(500);
+      return res.end('Error loading file');
+    }
+    res.writeHead(200);
+    res.end(data);
+    })
+})
+
+
 app.get('/screens', function(req,res){
   console.log(screens);
   res.json(screens);

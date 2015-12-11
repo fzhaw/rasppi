@@ -6,10 +6,18 @@
 <select name="screen" id="screen_list">
 </select>
 <button id="openNewSessionButton">Choose screen</button>
+<div id="url"></div>
 
 <script>
 document.querySelector('#openNewSessionButton').onclick = function() {
     //connection.open();
+    opts = document.getElementById("screen_list");
+    var sc = opts.options[opts.selectedIndex].value;
+    var link = document.createElement("a");
+    link.setAttribute("href", screens[sc].sharing_url);
+    var t = document.createTextNode("Click here to start sharing");
+    link.appendChild(t);
+    document.getElementById("url").appendChild(link);
     notifyScreen();
 };
 
