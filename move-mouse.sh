@@ -1,4 +1,5 @@
 #!/bin/bash
-
-xdotools 0 0
+export DISPLAY=:0
+xdotool mousemove 0 1
+xdotool mousemove 0 0
 
