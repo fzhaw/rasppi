@@ -1,0 +1,47 @@
+<html>
+<head>
+<title>Welcome to BetterCast! A proud hack by ICCLab</title>
+
+
+<select name="screen" id="screen_list">
+</select>
+<button id="openNewSessionButton">Choose screen</button>
+
+
+
+
+<script>
+document.querySelector('#openNewSessionButton').onclick = function() {
+    connection.open();
+    notifyPiOpen();
+};
+
+function getScreens(){
+    url = window.location.href;
+    ip = url.split("//")[1];
+    ip = ip.split("/")[0];
+    xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+    if (xhttp.readyState == 4 && xhttp.status == 200) {
+      sc = document.getElementById("screen_list");
+      var jsonResponse = JSON.parse(xhttp.responseText);
+    }
+};
+    xhttp.open("GET", "https://"+ip+"/screens", true);
+    xhttp.send();
+}
+
+// notify Pi to open the window
+function notifyPiOpen(){
+    url = window.location.href;
+    ip = url.split("//")[1];
+    ip = ip.split(":")[0];
+    xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "https://"+ip+":1880/notify", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send("url="+url);
+}
+
+getScreens();
+</script>
+

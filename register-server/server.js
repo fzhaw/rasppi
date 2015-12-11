@@ -33,7 +33,7 @@ app.post('/register',function(req,res){
 });
 
 app.get('/', function(req,res){
-  fs.readFile(__dirname + "home.html", function(err, data) {
+  fs.readFile(__dirname + "/home.html", function(err, data) {
     if (err) {
       console.log(err);
       res.writeHead(500);
