@@ -17,7 +17,7 @@ case "$1" in
     ;;
     stop)
         echo -n "Shutting down noip2."
-        killproc -TERM /usr/local/bin/noip2
+        killall noip2
     ;;
     *)
         echo "Usage: $0 {start|stop}"
