@@ -31,15 +31,6 @@ document.querySelector('#openNewSessionButton').onclick = function() {
     notifyPiOpen();
 };
 
-// if participant wants, he can add his screen at runtime!
-document.querySelector('#shareParticipantScreenButton').onclick = function() {
-    connection.addStream({
-        screen: true,
-        oneway: true
-    });
-};
-
-
 // React to stream ending
 connection.onstreamended = function(e) {
             setTimeout(function() {
@@ -51,8 +42,10 @@ connection.onstreamended = function(e) {
 // notify Pi to open the window
 function notifyPiOpen(){
     url = window.location.href;
+    ip = url.split("//")[1];
+    ip = ip.split(":")[0];
     xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "https://bettercast.ddns.net:1880/notify", true);
+    xhttp.open("POST", "https://"+ip+":1880/notify", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send("url="+url);
 }
