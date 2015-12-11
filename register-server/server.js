@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 var https = require('https');
 var app = express();
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
 var screens = {};
 var fs = require('fs');
 
