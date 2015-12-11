@@ -52,7 +52,7 @@ app.get('/', function(req,res){
 })
 
 
-app.get('/sharing', function(req,res){
+app.get('/sharing/*', function(req,res){
   fs.readFile(__dirname + "/index.html", function(err, data) {
     if (err) {
       console.log(err);
