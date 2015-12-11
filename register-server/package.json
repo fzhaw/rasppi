@@ -1,6 +1,6 @@
 {
   "name": "register-server",
-  "version": "0.9",
+  "version": "0.9.0",
   "dependencies": {
     "body-parser": "^1.8.1",
     "express": "^4.9.0"
