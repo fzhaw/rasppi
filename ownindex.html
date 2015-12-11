@@ -31,15 +31,6 @@ document.querySelector('#openNewSessionButton').onclick = function() {
     notifyPiOpen();
 };
 
-// if participant wants, he can add his screen at runtime!
-document.querySelector('#shareParticipantScreenButton').onclick = function() {
-    connection.addStream({
-        screen: true,
-        oneway: true
-    });
-};
-
-
 // React to stream ending
 connection.onstreamended = function(e) {
             setTimeout(function() {
