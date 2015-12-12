@@ -1,0 +1,95 @@
+<html>
+<head>
+<title>Welcome to BetterCast! A proud hack by ICCLab</title>
+
+<script src="//cdn.webrtc-experiment.com/RTCMultiConnection.js"></script>
+
+<button id="openNewSessionButton">Start sharing screen</button>
+
+
+<script>
+var connection = new RTCMultiConnection();
+
+// by default, initiator starts one-way screen
+connection.session = {
+    screen: true,
+    oneway: true
+};
+
+connection.onstream = function(e) {
+    // if somebody is already sharing hide the sharing buttons
+    document.querySelector('#openNewSessionButton').style.visibility = 'hidden';
+    document.body.removeChild(document.querySelector('#openNewSessionButton'));
+    // show the video
+    document.body.appendChild(e.mediaElement);
+};
+
+connection.connect();
+
+document.querySelector('#openNewSessionButton').onclick = function() {
+    connection.open();
+    notifyScreen();
+};
+
+// React to stream ending
+connection.onstreamended = function(e) {
+            setTimeout(function() {
+                window.close();
+            }, 1000);
+        };
+
+
+// Retrieve screens data
+var screens;
+function getScreens(){
+    url = window.location.href;
+    xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (xhttp.readyState == 4 && xhttp.status == 200) {
+        sc = document.getElementById("screen_list");
+        //var jsonResponse = JSON.parse(xhttp.responseText);
+	var jsonResponse = JSON.parse(xhttp.responseText);	
+        screens = jsonResponse;
+      }
+    };
+    u = url.split("/sharing")[0];
+    xhttp.open("GET", u + "/screens", true);
+    xhttp.send();
+}
+
+// notify Pi to open the window
+function notifyScreen(){
+    url = window.location.href;
+    sc = url.split("/sharing/")[1];
+    //alert(sc);
+    dict = screens[sc].notify_url;
+    //ip = url.split("//")[1];
+    //ip = ip.split(":")[0];
+    for (var key in dict) {
+      xhttp = new XMLHttpRequest();
+      xhttp.open("POST", dict[key], true);
+      if ( key == "browser"){
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send("url=" + url);
+      } else {
+	xhttp.send();
+      }      
+    }
+}
+
+getScreens();
+
+
+
+// notify Pi to open the window
+//function notifyPiOpen(){
+//    url = window.location.href;
+//    ip = url.split("//")[1];
+//    ip = ip.split(":")[0];
+//    xhttp = new XMLHttpRequest();
+//    xhttp.open("POST", "https://"+ip+":1880/notify", true);
+//    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+//    xhttp.send("url="+url);
+//}
+</script>
+

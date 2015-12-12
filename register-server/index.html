@@ -2,92 +2,69 @@
 <head>
 <title>Welcome to BetterCast! A proud hack by ICCLab</title>
 
-<script src="//cdn.webrtc-experiment.com/RTCMultiConnection.js"></script>
 
-<button id="openNewSessionButton">Start sharing screen</button>
-
+<select name="screen" id="screen_list">
+</select>
+<button id="openNewSessionButton">Choose screen</button>
+<div id="url"></div>
 
 <script>
-var connection = new RTCMultiConnection();
-
-// by default, initiator starts one-way screen
-connection.session = {
-    screen: true,
-    oneway: true
-};
-
-connection.onstream = function(e) {
-    // if somebody is already sharing hide the sharing buttons
-    document.querySelector('#openNewSessionButton').style.visibility = 'hidden';
-    document.body.removeChild(document.querySelector('#openNewSessionButton'));
-    // show the video
-    document.body.appendChild(e.mediaElement);
-};
-
-connection.connect();
-
 document.querySelector('#openNewSessionButton').onclick = function() {
-    connection.open();
-    notifyScreen();
+    //connection.open();
+    opts = document.getElementById("screen_list");
+    var sc = opts.options[opts.selectedIndex].value;
+    var link = document.createElement("a");
+    url = window.location.href
+    link.setAttribute("href", url + "sharing/" + sc);
+    var t = document.createTextNode("Click here to start sharing");
+    link.appendChild(t);
+    document.getElementById("url").appendChild(link);
+    //notifyScreen();
 };
 
-// React to stream ending
-connection.onstreamended = function(e) {
-            setTimeout(function() {
-                window.close();
-            }, 1000);
-        };
-
-
-// Retrieve screens data
 var screens;
+
 function getScreens(){
     url = window.location.href;
     xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
       if (xhttp.readyState == 4 && xhttp.status == 200) {
         sc = document.getElementById("screen_list");
-        //var jsonResponse = JSON.parse(xhttp.responseText);
-	var jsonResponse = JSON.parse(xhttp.responseText);	
+        var jsonResponse = JSON.parse(xhttp.responseText);
         screens = jsonResponse;
+        for (var key in jsonResponse) {
+          if (jsonResponse.hasOwnProperty(key)) {
+            //alert(jsonResponse[key]);
+            var opt = document.createElement("option");
+            opt.setAttribute("value", key);
+            var t = document.createTextNode(key);
+            opt.appendChild(t);
+            sc.appendChild(opt);   
+          }
+        }
       }
     };
-    u = url.split("/sharing")[0];
-    xhttp.open("GET", u + "/screens", true);
+    xhttp.open("GET", url + "screens", true);
     xhttp.send();
 }
 
-// notify Pi to open the window
-function notifyScreen(){
-    url = window.location.href;
-    sc = url.split("/sharing/")[1];
-    //alert(sc);
-    dict = screens[sc].notify_url;
-    //ip = url.split("//")[1];
-    //ip = ip.split(":")[0];
-    for (var key in dict) {
-      xhttp = new XMLHttpRequest();
-      xhttp.open("POST", dict[key], true);
-      if ( key == "browser"){
-        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhttp.send("url=" + url);
-      }
-    }
-}
-
-getScreens();
-
-
-
-// notify Pi to open the window
-//function notifyPiOpen(){
+//// notify Pi to open the window
+//function notifyScreen(){
 //    url = window.location.href;
 //    ip = url.split("//")[1];
-//    ip = ip.split(":")[0];
-//    xhttp = new XMLHttpRequest();
-//    xhttp.open("POST", "https://"+ip+":1880/notify", true);
-//    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-//    xhttp.send("url="+url);
+//    ip = ip.split("/")[1];
+//    sc = ip.split("/")[1];
+//    dict = screens[sc].notify_url;
+//    //ip = url.split("//")[1];
+//    //ip = ip.split(":")[0];
+//    for (var key in dict) {
+//      xhttp = new XMLHttpRequest();
+//      xhttp.open("POST", url, true);
+//      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+//      xhttp.send("url=" + url + "sharing/" + sc);
+//    }
 //}
+
+getScreens();
 </script>
 
