@@ -30,7 +30,15 @@ connection.connect();
 
 document.querySelector('#openNewSessionButton').onclick = function() {
     connection.open();
-    notifyScreen();
+    url = window.location.href;
+    name = url.split("/sharing/")[1];
+    if ( name == 'broadcast'){
+      for (var key in screens) {
+         notifyScreen(key);
+      }
+    } else {
+      notifyScreen(name);
+    }
 };
 
 document.querySelector('#startVideo').onclick = function() {
@@ -72,9 +80,7 @@ function getScreens(){
 }
 
 // notify Pi to open the window
-function notifyScreen(){
-    url = window.location.href;
-    sc = url.split("/sharing/")[1];
+function notifyScreen(sc){
     //alert(sc);
     dict = screens[sc].notify_url;
     //ip = url.split("//")[1];
