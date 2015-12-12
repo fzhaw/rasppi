@@ -32,6 +32,7 @@ function getScreens(){
         sc = document.getElementById("screen_list");
         var jsonResponse = JSON.parse(xhttp.responseText);
         screens = jsonResponse;
+        screens.broadcast = {"name": "broadcast" };
         for (var key in jsonResponse) {
           if (jsonResponse.hasOwnProperty(key)) {
             //alert(jsonResponse[key]);
