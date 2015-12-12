@@ -30,15 +30,16 @@ connection.connect();
 
 document.querySelector('#openNewSessionButton').onclick = function() {
     connection.open();
-    url = window.location.href;
-    name = url.split("/sharing/")[1];
-    if ( name == 'broadcast'){
-      for (var key in screens) {
-         notifyScreen(key);
-      }
-    } else {
-      notifyScreen(name);
-    }
+    // url = window.location.href;
+//     name = url.split("/sharing/")[1];
+//     if ( name == 'broadcast'){
+//       for (var key in screens) {
+//          notifyScreen(key);
+//       }
+//     } else {
+//       notifyScreen(name);
+//     }
+  findNotify();
 };
 
 document.querySelector('#startVideo').onclick = function() {
@@ -50,7 +51,7 @@ document.querySelector('#startVideo').onclick = function() {
       audio:     true,
     }
     connection.open();
-    notifyScreen();
+    findNotify();
 };
 
 // React to stream ending
@@ -60,6 +61,17 @@ connection.onstreamended = function(e) {
             }, 1000);
         };
 
+function findNotify(){
+  url = window.location.href;
+  name = url.split("/sharing/")[1];
+  if ( name == 'broadcast'){
+    for (var key in screens) {
+       notifyScreen(key);
+    }
+  } else {
+    notifyScreen(name);
+  }
+}
 
 // Retrieve screens data
 var screens;
