@@ -1,10 +1,12 @@
 <html>
 <head>
+<link rel="stylesheet" type="text/css" href="/bettercast.css">
+<link rel="stylesheet" type="text/css" href="/bootstrap.min.css">
+<script src="//cdn.webrtc-experiment.com/RTCMultiConnection.js"></script>
+
   <title>BetterCast ICCLab</title>
-  <a><h3>Welcome to BetterCast! A proud hack by ICCLab</h3></a>
-  <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
-  <script src="//cdn.webrtc-experiment.com/RTCMultiConnection.js"></script>
-  <div>
+  <div align="center"><h3>Welcome to BetterCast! A proud hack by ICCLab</h3></div>
+  <div id="buttons" align="center">
     <button id="openNewSessionButton" class="btn btn-primary"><h2>Start sharing screen</h2></button>
     <button id="startVideo" class="btn btn-primary"><h2>Start video sharing</h2></button>
   </div>
@@ -20,10 +22,10 @@ connection.session = {
 
 connection.onstream = function(e) {
     // if somebody is already sharing hide the sharing buttons
-    document.querySelector('#openNewSessionButton').style.visibility = 'hidden';`
-    document.querySelector('#startVideo').style.visibility = 'hidden';
-    document.body.removeChild(document.querySelector('#openNewSessionButton'));
-    document.body.removeChild(document.querySelector('#startVideo'));
+    document.querySelector('#buttons').style.display = 'none';
+    //document.querySelector('#startVideo').style.visibility = 'hidden';
+    //document.body.removeChild(document.querySelector('#openNewSessionButton'));
+    //document.body.removeChild(document.querySelector('#startVideo'));
     // show the video
     document.body.appendChild(e.mediaElement);
 };
