@@ -4,7 +4,7 @@ if [ -z "$ip" ]; then
  ip=`ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/'  | head -c -1`
 fi
 ippi=$ip
-name='manu-pi'
+name='pib'
 display=':0'
 wakeup='https://'$ippi':1880/notify-wake-up'
 browser='https://'$ip':1880/notify'
