@@ -10,10 +10,9 @@ app.use(bodyParser.urlencoded());
 var screens = {};
 var fs = require('fs');
 
-var privateKey  = fs.readFileSync('../key.pem', 'utf8');
-var certificate = fs.readFileSync('../cert.pem', 'utf8');
+var privateKey  = fs.readFileSync('keys/key.pem', 'utf8');
+var certificate = fs.readFileSync('keys/cert.pem', 'utf8');
 var credentials = {key: privateKey, cert: certificate};
-
 
 
 //Lets define a port we want to listen to
@@ -51,6 +50,18 @@ app.get('/', function(req,res){
     })
 })
 
+app.get('RTCMultiConnection.js', function(req,res){
+  fs.readFile(__dirname + "/RTCMultiConnection.js", function(err, data) {
+    if (err) {
+      console.log(err);
+      res.writeHead(500);
+      return res.end('Error loading file');
+    }
+    res.writeHead(200);
+    res.end(data);
+    })
+})
+
 
 app.get('/sharing/*', function(req,res){
   fs.readFile(__dirname + "/sharing.html", function(err, data) {
@@ -63,6 +74,20 @@ app.get('/sharing/*', function(req,res){
     res.end(data);
     })
 })
+
+app.get('*.css', function(req,res){
+  filename = req.url;
+  fs.readFile(__dirname + filename, function(err, data) {
+    if (err) {
+      console.log(err);
+      res.writeHead(500);
+      return res.end('Error loading file');
+    }
+    res.writeHead(200);
+    res.end(data);
+    })
+})
+
 
 
 app.get('/screens', function(req,res){

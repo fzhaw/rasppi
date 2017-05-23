@@ -1,12 +1,19 @@
 <html>
 <head>
-<title>Welcome to BetterCast! A proud hack by ICCLab</title>
+<title>BetterCast ICCLab</title>
+<link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="bettercast.css">
 
-
-<select name="screen" id="screen_list">
-</select>
-<button id="openNewSessionButton">Choose screen</button>
+<div align="center"><h3>Welcome to BetterCast! A proud hack by ICCLab</h3><div>
+<div>
+    <table><tr>
+    <td><select name="screen" id="screen_list" class="dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></select></td>
+    <td><button id="openNewSessionButton" class="btn btn-primary"><h2>Choose screen</h2></button></td>
+   </tr></table>
+</div>
+<div/>
 <div id="url"></div>
+<div>In order to use this application you should be using Chrome and have installed the <a href="https://chrome.google.com/webstore/detail/screen-capturing">WebRTC screen capturing plugin</a></div>
 
 <script>
 document.querySelector('#openNewSessionButton').onclick = function() {
@@ -32,6 +39,7 @@ function getScreens(){
         sc = document.getElementById("screen_list");
         var jsonResponse = JSON.parse(xhttp.responseText);
         screens = jsonResponse;
+        screens.broadcast = {"name": "broadcast" };
         for (var key in jsonResponse) {
           if (jsonResponse.hasOwnProperty(key)) {
             //alert(jsonResponse[key]);
