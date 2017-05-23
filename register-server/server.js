@@ -10,9 +10,9 @@ app.use(bodyParser.urlencoded());
 var screens = {};
 var fs = require('fs');
 
-//var privateKey  = fs.readFileSync('../key.pem', 'utf8');
-//var certificate = fs.readFileSync('../cert.pem', 'utf8');
-//var credentials = {key: privateKey, cert: certificate};
+var privateKey  = fs.readFileSync('keys/key.pem', 'utf8');
+var certificate = fs.readFileSync('keys/cert.pem', 'utf8');
+var credentials = {key: privateKey, cert: certificate};
 
 
 //Lets define a port we want to listen to
@@ -40,6 +40,18 @@ app.post('/register',function(req,res){
 
 app.get('/', function(req,res){
   fs.readFile(__dirname + "/index.html", function(err, data) {
+    if (err) {
+      console.log(err);
+      res.writeHead(500);
+      return res.end('Error loading file');
+    }
+    res.writeHead(200);
+    res.end(data);
+    })
+})
+
+app.get('RTCMultiConnection.js', function(req,res){
+  fs.readFile(__dirname + "/RTCMultiConnection.js", function(err, data) {
     if (err) {
       console.log(err);
       res.writeHead(500);
@@ -84,9 +96,9 @@ app.get('/screens', function(req,res){
   res.end();
 })
 
-var httpServer = http.createServer(app);
+var httpsServer = https.createServer(credentials, app);
 
-httpServer.listen(PORT, function(){
+httpsServer.listen(PORT, function(){
   console.log("Started on PORT " + PORT);
 })
 
