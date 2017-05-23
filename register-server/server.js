@@ -10,10 +10,9 @@ app.use(bodyParser.urlencoded());
 var screens = {};
 var fs = require('fs');
 
-var privateKey  = fs.readFileSync('../key.pem', 'utf8');
-var certificate = fs.readFileSync('../cert.pem', 'utf8');
-var credentials = {key: privateKey, cert: certificate};
-
+//var privateKey  = fs.readFileSync('../key.pem', 'utf8');
+//var certificate = fs.readFileSync('../cert.pem', 'utf8');
+//var credentials = {key: privateKey, cert: certificate};
 
 
 //Lets define a port we want to listen to
@@ -85,9 +84,9 @@ app.get('/screens', function(req,res){
   res.end();
 })
 
-var httpsServer = https.createServer(credentials, app);
+var httpServer = http.createServer(app);
 
-httpsServer.listen(PORT, function(){
+httpServer.listen(PORT, function(){
   console.log("Started on PORT " + PORT);
 })
 
